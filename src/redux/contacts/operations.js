@@ -2,37 +2,40 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { myApi } from "../auth/operations";
 
 
-
-export const fetchContacts = createAsyncThunk("fetchData", async (thunkApi) => {
-  try {
-    const { data } = await myApi.get("/contacts");
-
-    return data;
-  } catch (error) {
-    return thunkApi.rejectWithValue(error.message);
-  }
-});
-
-export const deleteContactThunk = createAsyncThunk(
-  "deleteContact",
-  async (id, thunkApi) => {
+export const fetchContacts = createAsyncThunk(
+  "contacts/fetchContacts",
+  async (_, { rejectWithValue }) => {
     try {
-      const { data } = await myApi.delete(`/contacts/${id}`);
-      return data.id;
+      const { data } = await myApi.get("/contacts");
+      return data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-export const addContactThunk = createAsyncThunk(
-  "addContact",
-  async (body, thunkApi) => {
+
+export const deleteContactThunk = createAsyncThunk(
+  "contacts/deleteContact",
+  async (id, { rejectWithValue }) => {
     try {
-      const { data } = await myApi.post("/contacts", body);
+      await myApi.delete(`/contacts/${id}`);
+      return id; 
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+export const addContactThunk = createAsyncThunk(
+  "contacts/addContact",
+  async (contactData, { rejectWithValue }) => {
+    try {
+      const { data } = await myApi.post("/contacts", contactData);
       return data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

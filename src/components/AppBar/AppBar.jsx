@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import styles from "./Header.module.css";
+import styles from "./AppBar.module.css";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, selectIsLoggedIn } from "../../redux/auth/selectors";
+import { logout } from "../../redux/auth/operations";
 
-const Header = () => {
+const AppBar = () => {
   const buildLinkClass = ({ isActive }) => {
     return clsx(styles.link, isActive && styles.activeLink);
   };
@@ -23,7 +24,7 @@ const Header = () => {
         </NavLink>
         <NavLink className={buildLinkClass} to="/contacts">
           Contacts
-        </NavLink> 
+        </NavLink>
         {!isLoggedIn && (
           <>
             <NavLink className={buildLinkClass} to="/login">
@@ -37,13 +38,13 @@ const Header = () => {
         {isLoggedIn && (
           <button
             onClick={() => dispatch(logout())}
-            className="btn btn-secondary"
+            className={styles.button}
           >
-            Sign Up
+            Log Out
           </button>
         )}
       </div>
     </div>
   );
 };
-export default Header;
+export default AppBar;

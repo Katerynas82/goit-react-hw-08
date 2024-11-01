@@ -31,7 +31,12 @@ const contactsSlice = createSlice({
       .addCase(addContactThunk.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
-      .addCase(logout.fulfilled, ()=>initialState)
+      .addCase(logout.fulfilled, (state) => {
+        state.items = [];
+        state.isLoading = false;
+        state.isError = null;
+        state.searchStr = "";
+      })
 
       .addMatcher(
         isAnyOf(
@@ -69,21 +74,3 @@ const contactsSlice = createSlice({
 });
 
 export const contactsReducer = contactsSlice.reducer;
-export const selectContacts = state => state.contacts.items;
-export const selectIsLoading = state => state.contacts.isLoading;
-export const selectIsError = state => state.contacts.isError;
-export const selectNameFilter = state => state.filters.name;
-
-export const selectFilteredContacts = createSelector(
-  [selectContacts, selectNameFilter],
-  (contacts, name) => {
-    if (!name) {
-      return contacts;
-    }
-    return contacts.filter(
-      (contact) =>
-        contact.name.toLowerCase().includes(name.toLowerCase()) ||
-        contact.number.includes(name)
-    );
-  }
-);
