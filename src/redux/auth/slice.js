@@ -12,7 +12,7 @@ const initialState = {
   isLoggedIn: false,
   //   isRefreshing: false,
 };
-const slice = createSlice({
+ const slice = createSlice({
   name: "auth",
   initialState,
   extraReducers: (builder) => {

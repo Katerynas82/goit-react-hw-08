@@ -43,3 +43,22 @@ export const logout = createAsyncThunk("logout", async (_, thunkApi) => {
     return thunkApi.rejectWithValue(error.message);
   }
 });
+
+export const refreshUser = createAsyncThunk(
+  "auth/refreshUser",
+  async (_, thunkApi) => {
+    const state = thunkApi.getState();
+    const token = state.auth.token;
+    if (!token) {
+      return thunkApi.rejectWithValue("No token found, unable to refresh.");
+    }
+    setAuthHeader(token);
+
+    try {
+      const { data } = await myApi.get("users/current"); // Запит на отримання поточного користувача
+      return data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
