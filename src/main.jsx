@@ -2,9 +2,9 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import "modern-normalize";
-
+import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store.js";
+import { persistor } from "./redux/store.js";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { PersistGate } from "redux-persist/integration/react";
